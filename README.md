@@ -1,5 +1,6 @@
 # terminal-messenger
-
+## Dependencies
+ncurses, boost.Asio
 ## Installation
 ```
 mkdir build
