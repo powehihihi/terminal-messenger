@@ -33,6 +33,7 @@ int main() {
 	mvprintw(LINES-1, 1, "Press F1 to leave current mode");
   refresh();
 
+
   DialoguesWindow dw (AllChats);
   ChatWindow cw(dptr, LINES-7, (2*COLS)/3-1, COLS/3+1);
   InputWindow iw (5, (2*COLS)/3-1, LINES-7, COLS/3+1);
