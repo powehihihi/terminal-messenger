@@ -5,6 +5,7 @@
 
 struct UserId {
   int id;
+  UserId(): id(0) {}
   explicit UserId(int id): id(id) {}
   explicit operator int() const {
     return id;
@@ -12,6 +13,7 @@ struct UserId {
 };
 struct ChatId {
   int id;
+  ChatId(): id(0) {}
   explicit ChatId(int id): id(id) {}
   explicit operator int() const {
     return id;
@@ -19,9 +21,11 @@ struct ChatId {
 };
 
 struct Message {
-  const UserId user;
+  const UserId from;
+  const ChatId to;
   const std::string text;
-  Message(UserId user, std::string&& text): user(user), text(text) {}
+  Message() = default;
+  Message(UserId from, ChatId to, std::string&& text): from(from), to(to), text(std::move(text)) {}
 };
 
 class Dialogue {
