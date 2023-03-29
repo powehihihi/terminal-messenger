@@ -72,7 +72,7 @@ void WebSocketClient::on_handshake(beast::error_code ec) {
 
 void WebSocketClient::handler() {
   if (state->PopOutcome(msg)) {
-    ws.async_write(net::buffer(MessageToString(msg)),
+    ws.async_write(net::buffer(Message::MessageToString(msg)),
         [self = shared_from_this()](
           beast::error_code ec,
           std::size_t bytes_transferred) {
@@ -88,23 +88,10 @@ void WebSocketClient::handler() {
             return;
           if (ec)
             return self->Error(ec, "Read error");
-          self->state->PushIncome(self->StringToMessage(beast::buffers_to_string(self->ReadBuffer.data())));
+          self->state->PushIncome(Message::StringToMessage(beast::buffers_to_string(self->ReadBuffer.data())));
           self->ReadBuffer.consume(bytes_transferred);
           self->handler();
       });
-}
-
-std::string WebSocketClient::MessageToString(const Message& msg) {
-  return "f:" + std::to_string(static_cast<int>(msg.from)) +
-         "t:" + std::to_string(static_cast<int>(msg.to)) +
-         "m:" + msg.text;
-}
-Message WebSocketClient::StringToMessage(const std::string& str) {
-  int from, to;
-  char buf[1234];
-  if (sscanf(str.c_str(), "f:%dt:%dm:%s", &from, &to, buf)!=3)
-    throw std::runtime_error("Wrong Message");
-  return Message(UserId(from), ChatId(to), std::string(buf));
 }
 
 void WebSocketClient::Error(beast::error_code ec, char const* what) {

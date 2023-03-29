@@ -59,8 +59,10 @@ class WebSocketClient:
   void handler();
   void Error(beast::error_code ec, char const* what);
 
+  /*    should be in Message class
   static std::string MessageToString(const Message& msg);
   static Message StringToMessage(const std::string& str);
+  */
 };
 
 
